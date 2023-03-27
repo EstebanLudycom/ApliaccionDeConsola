@@ -1,5 +1,5 @@
 const { guardarDB, leerDB } = require("./helpers/guardarArchivo.js");
-const { inquirerMenu, pause, leerInput } = require("./helpers/inquirer.js");
+const { inquirerMenu, pause, leerInput, listadoTareasBorrar } = require("./helpers/inquirer.js");
 const Tarea = require("./models/tarea.js");
 const Tareas = require("./models/Tareas.js");
 
@@ -31,38 +31,51 @@ const main = async() => {
         opt = await inquirerMenu();
 
         switch (opt) {
-            case "1":
-
-            const descripcion = await leerInput("Descripcion: ")
-            tareas.crearTarea(descripcion);
+            case "1": //Crear tarea
+                const descripcion = await leerInput("Descripcion: ")
+                tareas.crearTarea(descripcion);
 
             break;
 
-            case "2":
-                tareas.listadoCompleto();
-            break;
+            case "2": //Completar tarea
 
-            case "3":
-            tareas.listarTareasPorEstados(true);
             break;
             
-            case "4":
-            tareas.listarTareasPorEstados(false);
+            case "3": //listar tareas
+                tareas.listadoCompleto();
+
+            break;
+            
+            case "4": //listar tareas completadas
+                tareas.listarTareasPorEstados(true);
+
+            break;
+            
+            case "5": //listar tareas pendeintes
+                tareas.listarTareasPorEstados(false);
+                
             break;
 
-            case "0":
+            case "6": //Borrar
+                
+            const id = await listadoTareasBorrar(tareas.listadoArray);
+            console.log({id});
+
+            break;
+
+            case "0": //Salir
+                console.log("Hasta luego");
                 
             break;
         }
 
         guardarDB(tareas.listadoArray)
-
+        
         await pause()
         
     } while ( opt !== "0");
-
+    
     console.clear();
-    console.log("Hasta luego");
 
 }
 

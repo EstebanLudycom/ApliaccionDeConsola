@@ -14,19 +14,27 @@ const preguntas = [
             },
             {
                 value: "2",
-                name: `${"2.".green} listar tareas`
+                name: `${"2.".green} Completar tareas`
             },
             {
                 value: "3",
-                name: `${"3.".green} Tareas completadas`
+                name: `${"3.".green} Listar tareas`
             },
             {
                 value: "4",
-                name: `${"4.".green} Tareas por completar`
+                name: `${"4.".green} Lista de tareas completadas`
+            },
+            {
+                value: "5",
+                name: `${"5.".green} Lista de tareas pendientes`
+            },
+            {
+                value: "6",
+                name: `${"6.".green} Borrar`
             },
             {
                 value: "0",
-                name: `${"0.".green} Salir\n`
+                name: `${"0.".green} Salir`
             },
         ]
     },
@@ -64,6 +72,33 @@ const pause = async() =>{
     return pausar
 }
 
+const listadoTareasBorrar = async(tareas = []) => {
+
+    const choices = tareas.map((tarea, i) => {
+
+        const idx = `${i+1}`.green 
+        return{
+            value: tarea.id,
+            name: `${idx}. ${tarea.descripcion}`
+        }
+
+
+    })
+        const preguntas = [
+            {
+                type: "list",
+                name: "id",
+                message: "Borrar",
+                choices
+            }
+        ]
+
+        const {id} = await inquirer.prompt(preguntas);
+        return id;
+
+
+}
+
 const leerInput = async(message) =>{
 
     const question = [
@@ -90,7 +125,8 @@ const leerInput = async(message) =>{
 module.exports = {
     inquirerMenu,
     pause,
-    leerInput
+    leerInput,
+    listadoTareasBorrar
 }
 // inquirerMenu();
 // pause();
