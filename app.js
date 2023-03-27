@@ -1,6 +1,13 @@
 const { guardarDB, leerDB } = require("./helpers/guardarArchivo.js");
-const { inquirerMenu, pause, leerInput, listadoTareasBorrar } = require("./helpers/inquirer.js");
-const Tarea = require("./models/tarea.js");
+const { 
+    inquirerMenu,
+    pause,
+    leerInput,
+    listadoTareasBorrar,
+    confirmar ,
+    mostrarListadoChecklist
+} = require("./helpers/inquirer.js");
+
 const Tareas = require("./models/Tareas.js");
 
 // console.clear();
@@ -37,7 +44,10 @@ const main = async() => {
 
             break;
 
-            case "2": //Completar tarea
+            case "2": //Cambiar estado de tareas
+
+                ids = await mostrarListadoChecklist(tareas.listadoArray);
+                tareas.toggleComlpletadas(ids);
 
             break;
             
@@ -59,7 +69,13 @@ const main = async() => {
             case "6": //Borrar
                 
             const id = await listadoTareasBorrar(tareas.listadoArray);
-            console.log({id});
+            if(!id === 0){
+                const ok = await confirmar("¿Estás Seguro?");
+                if (ok) {
+                    tareas.borrarTarea(id);
+                    console.log("Tarea borrada")
+                }
+            } 
 
             break;
 

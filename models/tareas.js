@@ -60,7 +60,7 @@ class Tareas{
             if (completadas == true) {
                 idx +=1;
                 if (tarea.completado) {
-                    console.log(`${idx.toString().green} ${tarea.descripcion} :: ${estado} En la fecha: ${tarea.completado}. `)
+                    console.log(`${idx.toString().green} ${tarea.descripcion} :: ${estado} En la fecha: ${(tarea.completado).green}. `)
 
                 }
             }else{
@@ -73,6 +73,23 @@ class Tareas{
             }
             
         })
+
+    }
+
+    toggleComlpletadas(ids = []){
+        ids.forEach(id => {
+
+            const tarea = this._listado[id];
+            if (!tarea.completado) tarea.completado = new Date().toISOString()
+
+        });
+
+        this.listadoArray.forEach(tarea => {
+            if (!ids.includes(tarea.id)){
+                this._listado[tarea.id].completado = null;
+            }
+        })
+
 
     }
 
